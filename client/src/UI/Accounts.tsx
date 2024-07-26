@@ -30,7 +30,7 @@ export const Accounts = () => {
                 <br />
 
                 <div style={{width: "100%", display: "flex", justifyContent: "flex-end"}}>
-                    <Button  onClick={() => {
+                    <Button color={"red.3"} onClick={() => {
                         dispatch(promoteUserAsync(user!._id)).unwrap().then(() => {
                             handlerPromoteToEmployee.close()
                         })
@@ -46,7 +46,7 @@ export const Accounts = () => {
                 <br />
 
                 <div style={{width: "100%", display: "flex", justifyContent: "flex-end"}}>
-                    <Button  onClick={() => {
+                    <Button color={"red.3"} onClick={() => {
                         dispatch(promoteUserAsync(user!._id)).unwrap().then(() => {
                             handlerPromoteToProf.close()
                         })
