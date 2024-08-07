@@ -22,11 +22,11 @@ const path = require('path'),
 const config = require('config');
 
 
-const { MONGO_URL, PORT } = process.env;
+const { MONGO_URL, PORT, IMS_PORT, IMS_HOST } = process.env;
 
-const port = config.get('server.port')
-const host = config.get('server.host')
-const dbConnectionString =  config.get('server.dbConnectionString')
+const port = IMS_PORT || config.get('server.port')
+const host = IMS_HOST || config.get('server.host')
+const dbConnectionString = MONGO_URL || config.get('server.dbConnectionString')
 
 mongoose
     .connect(dbConnectionString, {
