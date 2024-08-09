@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.32.0 (HEAD)
+  labels:
+    io.kompose.service: etce-ims-server
+  name: etce-ims-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: etce-ims-server
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.32.0 (HEAD)
+      labels:
+        io.kompose.network/inventory-management-system-default: "true"
+        io.kompose.service: etce-ims-server
+    spec:
+      containers:
+        - env:
+            - name: MONGO_URL
+          image: etce-ims-server
+          name: etce-ims-server
+          ports:
+            - containerPort: 3007
+              hostPort: 3007
+              protocol: TCP
+      restartPolicy: Always
