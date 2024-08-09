@@ -1,4 +1,4 @@
-FROM node:22.5.1-slim
+FROM node:18.20.3
     MAINTAINER Anant Sujatanagarjuna <anant.sujatanagarjuna@tu-clausthal.de>
 
 WORKDIR /client
