@@ -77,7 +77,7 @@ module.exports.PrintItem = async (req, res, next) => {
         const item = await Item.findById(itemId);
         console.log(item)
         if(item){
-            const thing = await fetch("http://127.20.10.11:5000/print/" + itemId + "/" + item.name, {
+            const thing = await fetch("http://10.0.0.104:5000/print/" + itemId + "/" + item.name, {
                 method: "POST",
                 body: "{}",
                 headers: {
