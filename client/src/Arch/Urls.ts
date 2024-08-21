@@ -1,1 +1,1 @@
-export const BackendBaseUrl = "http://127.0.0.1:3007"
+export const BackendBaseUrl = "http://digit-25-222.digit.tu-clausthal.de/inventory-management-server"

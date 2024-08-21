@@ -22,7 +22,7 @@ spec:
         io.kompose.service: etce-ims-client
     spec:
       containers:
-        - image: etce-ims-client
+        - image: lieutanant/etce-ims-client:latest
           name: etce-ims-client
           ports:
             - containerPort: 3000

@@ -2,11 +2,13 @@ version: '3'
 services:
         etce-ims-server:
                 build: ./server
+                image: localhost:5000/etce-ims-server:latest
                 ports:
                   - 3007:3007
                 environment:
-                        MONGO_URL: ${MONGO_URL}
+                  MONGO_URL: "mongodb://localhost:27017/inventory-management"
         etce-ims-client:
                 build: ./client
+                image: localhost:5000/etce-ims-client:latest
                 ports:
-                  - ${IMS_CLIENT_PORT}:3000
+                  - 3000:3000

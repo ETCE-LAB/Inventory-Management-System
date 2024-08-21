@@ -1,7 +1,7 @@
 {
   "server": {
-    "host": "127.0.0.1",
+    "host": "0.0.0.0",
     "port": 3007,
-    "dbConnectionString": "mongodb+srv://itemmanager:7nOJIdHVTZ6eG1Hu@itemcluster.zmaft8w.mongodb.net/?retryWrites=true&w=majority"
+    "dbConnectionString": "mongodb://10.43.31.211:27017/inventory-management"
   }
 }

@@ -24,7 +24,7 @@ spec:
       containers:
         - env:
             - name: MONGO_URL
-          image: etce-ims-server
+          image: lieutanant/etce-ims-server:latest
           name: etce-ims-server
           ports:
             - containerPort: 3007
