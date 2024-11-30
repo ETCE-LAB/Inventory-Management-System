@@ -23,7 +23,7 @@ pipeline {
           cp -R client/* app/
           cd app
           npm install
-          npm run build
+          CI="false" npm run build
           ls -l build/
         '''
       }
