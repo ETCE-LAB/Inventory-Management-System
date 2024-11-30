@@ -3,9 +3,8 @@ pipeline {
     dockerregistry = "https://registry.etce.isse.tu-clausthal.de"
     dockerregistrycredential = "docker-registry-private"
     serverdockerimagename = "registry.etce.isse.tu-clausthal.de/etce-lab/inventory-management-server:latest"
-    clientdockerimagename = "registry.etce.isse.tu-clausthal.de/etce-lab/inventory-management-client:latest"
-    dockerImage = ""
-    TOKEN = credentials('jenkins-inventory-management-kubernetes-token')
+    serverDockerImage = ""
+    TOKEN = credentials('jenkins-deployer-sa-token')
     KUBERNETES_SERVER = credentials('kubernetes-server-api-url')
   }
   agent any
@@ -16,31 +15,35 @@ pipeline {
             branch: 'CI-CD'
       }
     }
-    stage('Build client image') {
+    stage('Build client react APP') {
+      steps{
+        sh '''
+          mkdir -p app
+          cp -R client/* app/
+          cd app
+          npm install
+          npm run build
+          ls -l build/
+        '''
+      }
+    }
+    stage('Deploy Static Files'){
+        steps{
+          sh '''
+            cp -R app/build/* /mnt/nginx-reverse-proxy-static-files/inventory-management/
+          '''
+        }
+    }
+    stage('Build Server image') {
       steps{
         script{
-          dir("client"){
-            clientDockerImage = docker.build(clientdockerimagename)
+          dir("server"){
+            serverDockerImage = docker.build(serverdockerimagename)
           }
         }
       }
     }
-    stage('Deploy Client Image'){
-      steps{
-        script{
-          docker.withRegistry(dockerregistry, dockerregistrycredential){
-          clientDockerImage.push("latest")
-          }
-        }
-      }
-    }stage('Build server image') {
-      steps{
-        script{
-        serverDockerImage = docker.build(serverdockerimagename)
-        }
-      }
-    }
-    stage('Deploy Image'){
+    stage('Deploy Server Image'){
       steps{
         script{
           docker.withRegistry(dockerregistry, dockerregistrycredential){
@@ -55,6 +58,15 @@ pipeline {
         sh 'docker rmi $clientdockerimagename'
       }
     }
-
+    stage('Re-deploy Kubernetes Pod'){
+          steps{
+                sh '''
+                 kubectl --token=${TOKEN} --server="${KUBERNETES_SERVER}" --insecure-skip-tls-verify -n inventory-management get pods
+                 kubectl --token=${TOKEN} --server="${KUBERNETES_SERVER}" --insecure-skip-tls-verify -n inventory-management delete pods -l=app=etce-ims-server
+                 kubectl --token=${TOKEN} --server="${KUBERNETES_SERVER}" --insecure-skip-tls-verify -n inventory-management apply -f etce-ims-server-deployment.yaml
+                 kubectl --token=${TOKEN} --server="${KUBERNETES_SERVER}" --insecure-skip-tls-verify -n inventory-management apply -f etce-ims-server-service.yaml
+                '''
+       }
+}
     }
   }

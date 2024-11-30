@@ -1,33 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.32.0 (HEAD)
   labels:
-    io.kompose.service: etce-ims-server
+    app: etce-ims-server
   name: etce-ims-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: etce-ims-server
+      app: etce-ims-server
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.32.0 (HEAD)
       labels:
-        io.kompose.network/inventory-management-system-default: "true"
-        io.kompose.service: etce-ims-server
+        app: etce-ims-server
     spec:
+      imagePullSecrets:
+      - name: docker-registry-private
       containers:
-        - env:
-            - name: MONGO_URL
-          image: lieutanant/etce-ims-server:latest
-          name: etce-ims-server
-          ports:
-            - containerPort: 3007
-              hostPort: 3007
-              protocol: TCP
-      restartPolicy: Always
+      - name: inventory-management-server
+        image: registry.etce.isse.tu-clausthal.de/etce-lab/inventory-management-server:latest
+        ports:
+        - containerPort: 3007
+        volumeMounts:
+          - name: config-file
+            mountPath: /server/config
+            readOnly: True
+      volumes:
+      - name: config-file
+        configMap:
+          name: etce-ims-server-configmap
+          items:
+            - key: default.json
+              path: default.json

@@ -10,6 +10,4 @@ RUN npm install
 
 COPY . .
 
-ENV MONGO_URL="mongodb://10.0.0.104:27017/"
-
 CMD npm start

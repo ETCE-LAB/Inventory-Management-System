@@ -1,16 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.32.0 (HEAD)
   labels:
-    io.kompose.service: etce-ims-server
-  name: etce-ims-server
+    io.kompose.service: etce-ims-server-service
+  name: etce-ims-server-service
 spec:
   ports:
-    - name: "3007"
+    - name: etce-ims-server
       port: 3007
-      targetPort: 3007
+      targetPort: 10007
   selector:
-    io.kompose.service: etce-ims-server
+    app: etce-ims-server
+  type: LoadBalancer
