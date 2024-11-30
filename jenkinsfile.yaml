@@ -23,7 +23,7 @@ pipeline {
           cp -R client/* app/
           cd app
           npm install
-          CI="false" npm run build
+          npm run build
           ls -l build/
         '''
       }
@@ -33,6 +33,12 @@ pipeline {
           sh '''
             cp -R app/build/* /mnt/nginx-reverse-proxy-static-files/inventory-management/
           '''
+        }
+    }
+    stage('Remove Build files'){
+        steps{
+          sh 'cd .. '
+          sh 'rm -rf app/'
         }
     }
     stage('Build Server image') {
@@ -56,7 +62,6 @@ pipeline {
     stage('Remove Unused docker image'){
       steps{
         sh 'docker rmi $serverdockerimagename'
-        sh 'docker rmi $clientdockerimagename'
       }
     }
     stage('Re-deploy Kubernetes Pod'){

@@ -7,8 +7,8 @@ metadata:
 spec:
   ports:
     - name: etce-ims-server
-      port: 3007
-      targetPort: 10007
+      port: 10007
+      targetPort: 3007
   selector:
     app: etce-ims-server
   type: LoadBalancer
