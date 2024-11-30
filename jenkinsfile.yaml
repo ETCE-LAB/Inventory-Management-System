@@ -1,5 +1,6 @@
 pipeline {
   environment {
+    CI="false"
     dockerregistry = "https://registry.etce.isse.tu-clausthal.de"
     dockerregistrycredential = "docker-registry-private"
     serverdockerimagename = "registry.etce.isse.tu-clausthal.de/etce-lab/inventory-management-server:latest"
