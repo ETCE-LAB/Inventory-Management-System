@@ -72,7 +72,7 @@ store.dispatch(setSelectedPage(1))
 
 root.render(
   <React.StrictMode>
-      <BrowserRouter basename="/inventory-management">
+      <BrowserRouter basename="/">
           <Provider store={store}>
               <MantineProvider theme={theme} defaultColorScheme="dark" >
                   <Notifications position="top-right"/>

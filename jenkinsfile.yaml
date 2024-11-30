@@ -1,0 +1,60 @@
+pipeline {
+  environment {
+    dockerregistry = "https://registry.etce.isse.tu-clausthal.de"
+    dockerregistrycredential = "docker-registry-private"
+    serverdockerimagename = "registry.etce.isse.tu-clausthal.de/etce-lab/inventory-management-server:latest"
+    clientdockerimagename = "registry.etce.isse.tu-clausthal.de/etce-lab/inventory-management-client:latest"
+    dockerImage = ""
+    TOKEN = credentials('jenkins-inventory-management-kubernetes-token')
+    KUBERNETES_SERVER = credentials('kubernetes-server-api-url')
+  }
+  agent any
+  stages {
+    stage('Checkout Source') {
+      steps {
+        git url: 'https://github.com/ETCE-LAB/Inventory-Management-System.git',
+            branch: 'CI-CD'
+      }
+    }
+    stage('Build client image') {
+      steps{
+        script{
+          dir("client"){
+            clientDockerImage = docker.build(clientdockerimagename)
+          }
+        }
+      }
+    }
+    stage('Deploy Client Image'){
+      steps{
+        script{
+          docker.withRegistry(dockerregistry, dockerregistrycredential){
+          clientDockerImage.push("latest")
+          }
+        }
+      }
+    }stage('Build server image') {
+      steps{
+        script{
+        serverDockerImage = docker.build(serverdockerimagename)
+        }
+      }
+    }
+    stage('Deploy Image'){
+      steps{
+        script{
+          docker.withRegistry(dockerregistry, dockerregistrycredential){
+          serverDockerImage.push("latest")
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image'){
+      steps{
+        sh 'docker rmi $serverdockerimagename'
+        sh 'docker rmi $clientdockerimagename'
+      }
+    }
+
+    }
+  }

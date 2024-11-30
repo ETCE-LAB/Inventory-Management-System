@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . .
 
-ENV MONGO_URL="mongodb://10.43.31.211:27017/inventory-management-system"
+ENV MONGO_URL="mongodb://10.0.0.104:27017/"
 
 CMD npm start
