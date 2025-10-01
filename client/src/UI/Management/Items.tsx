@@ -213,7 +213,7 @@ export const Items = () => {
 
                 <FileInput
                     accept="image/*"
-                    placeholder="Upload an image"
+                    placeholder={<Text fw={"bold"} c={"white"} size={"sm"}>Upload Image</Text>}
                     value={selectedFile}
                     onChange={(file) => {
                         setSelectedFile(file);
@@ -352,7 +352,7 @@ export const Items = () => {
 
                 <FileInput
                     accept="image/*"
-                    placeholder="Upload an image"
+                    placeholder={<Text fw={"bold"} c={"white"} size={"sm"}>Upload Image</Text>}
                     value={selectedFile}
                     onChange={(file) => {
                         setSelectedFile(file);
