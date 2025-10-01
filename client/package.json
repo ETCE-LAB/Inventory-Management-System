@@ -39,12 +39,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -58,6 +52,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react-html5-camera-photo": "^1.5.3"
+    "@types/react-html5-camera-photo": "^1.5.3",
+    "eslint": "^9.7.0",
+    "eslint-plugin-unused-imports": "^4.0.1"
   }
 }
